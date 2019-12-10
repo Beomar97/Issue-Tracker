@@ -1,0 +1,16 @@
+{
+  "name": "milestone_4",
+  "version": "1.0.0",
+  "description": "WEB3 Projekt Milestone 4 Deployment",
+  "main": "web_server.js",
+  "scripts": {
+    "test": "node web_server.js",
+    "start": "node web_server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.zhaw.ch/berweman/web3-projekt"
+  },
+  "author": "Marco Forster, Manuel Berweger",
+  "license": "ISC"
+}

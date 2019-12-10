@@ -1,0 +1,26 @@
+<issueList>
+    <ul class="list-group">
+        <h2>{ displayTitle() }</h2>
+        <issue each="{ getAllIssuesFromActiveProject() }"></issue>
+    </ul>
+
+    <script>
+        let tag = this;
+
+        tag.issues = new IssuesCollection();
+
+        tag.getAllIssuesFromActiveProject = function() {
+            var activeProject = projectsList._tag.projects.getActiveProject();
+            return tag.issues.getAllIssuesFromActiveProject(activeProject);
+        };
+
+        tag.displayTitle = function() {
+            var activeProject = projectsList._tag.projects.getActiveProject();
+            if(activeProject == undefined) {
+                return "Issues";
+            } else {
+                return "Issues of " + activeProject.title;
+            }
+    }
+    </script>
+</issueList>

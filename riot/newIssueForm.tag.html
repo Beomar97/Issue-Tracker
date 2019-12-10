@@ -1,0 +1,74 @@
+<newIssueForm>
+    <h2>New Issue</h2>
+    <div class="form-row">
+        <div class="col-2">
+            <label for="select_priority">Define the Priority</label>
+            <select ref="priority" class="form-control" id="select_priority">
+                <option class="selected hidden">Priority</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+            </select>    
+        </div>
+
+        <div class="col-2">
+            <label for="datepicker">Pick a due date</label>
+            <div class="input-group date">
+                <input ref="date" type="text" class="form-control" id="date" name="date" placeholder="YYYY-MM-DD" />
+            </div>
+        </div>
+
+        <div class="col">
+            <label for="input_newissue">Create a new Issue</label>
+            <div id="newIssueHTMLForm">
+            <input ref="title" type="text" class="form-control" id="input_newissue" placeholder="new issue..." />
+            <!-- <br> -->
+            <button onclick="{ createIssue }" type="submit" class="btn btn-primary">Create Issue</button>
+            </div>
+        </div>       
+    </div>
+
+    <script>
+        //<![CDATA[  <- Don't read as XML (To escape XML well formed errors)
+        let tag = this;
+
+        //Datepicker JS
+        $(document).ready(function(){
+            var date_input=$('input[name="date"]'); //our date input has the name "date"
+            var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+            var options={
+                format: 'yyyy-mm-dd',
+                container: container,
+                todayHighlight: true,
+                autoclose: true,
+            };
+            date_input.datepicker(options);
+        });
+
+        tag.createIssue = function() {
+            var activeProject = projectsList._tag.projects.getActiveProject();
+
+            var client_id = uuidv4(),
+                project_client_id = activeProject.client_id,
+                project_id = activeProject.id,
+                priority = tag.refs.priority.value,
+                due_date = new Date(tag.refs.date.value),
+                title = tag.refs.title.value,
+                done = false;
+
+            var issue = { client_id: client_id, project_client_id: project_client_id, project_id: project_id, priority: priority, due_date: due_date, title: title, done: done }
+            console.log(issue);
+            if(priority != 'Priority' && due_date != "" && title != "") {
+                issueList._tag.issues.saveInBackEnd(issue);
+                tag.resetInput();
+            }
+        };
+
+        tag.resetInput = function() {
+            tag.refs.priority.value = "Priority"
+            tag.refs.date.value = ""
+            tag.refs.title.value = ""
+        };
+        //]]>
+    </script>
+</newIssueForm>

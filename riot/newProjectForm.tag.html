@@ -1,0 +1,66 @@
+<newProjectForm>
+    <h2>Projects</h2>
+    <div class="form-row">
+    
+        <div class="col-4">
+            <div class="form-group">
+                <label for="select_existingprojects">Select an existing Project</label>
+                <select class="multiple form-control" id="select_existingprojects" size="4">
+                    <option each="{ getAllProjects() }" onclick="{ selectProject }">{ title }</option>
+                </select>
+            </div>
+        </div>
+    
+        <div class="col-8">
+            <div class="form-group">
+                <label for="input_newproject">Create a new Project</label>
+                <input ref="title" type="text" class="form-control" id="input_newproject" placeholder="new project..." />
+            </div>
+            <button onclick="{ createProject }" type="submit" class="btn btn-primary">Create Project</button>
+            <button onclick="{ removeProject }" type="submit" class="btn btn-primary">Remove Project</button>
+        </div>
+    </div>
+
+    <script>
+        let tag = this;
+
+        tag.projects = new ProjectsCollection();
+
+        tag.getAllProjects = function() {
+            return tag.projects.getAllProjects();
+        };
+
+        tag.selectProject = function() {
+            tag.projects.resetActiveProject();
+            tag.projects.setActiveProject(this.client_id);
+            issueList._tag.update(); //Update Riot-Tag
+        };
+
+        tag.createProject = function() {
+            var client_id = uuidv4(),
+                title = tag.refs.title.value,
+                active = false;
+
+            var project = { client_id: client_id, title: title, active: active }
+
+            if(title != "") {
+                tag.projects.saveInBackEnd(project);
+                tag.resetInput();
+            }      
+        };
+
+        tag.removeProject = function() {
+            var projectToRemove = tag.projects.getActiveProject();
+            tag.projects.deleteInBackEnd(projectToRemove);
+        };
+        
+        tag.resetInput = function() {
+            tag.refs.title.value = ""
+        };
+
+        //Hole Projekte beim Laden der Seite
+        tag.on('mount', function() {
+            tag.projects.LoadProjectsAndIssuesFromBackEnd();
+        });
+    </script>
+</newProjectForm>

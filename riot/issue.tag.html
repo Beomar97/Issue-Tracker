@@ -1,0 +1,34 @@
+<issue>
+    <li class="list-group-item">
+        <div class="form-row">
+            <div class="col">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" checked="{ done }" onclick="{ updateChecked }" />
+                    <label class="form-check-label" for="defaultCheck1">{ title }</label>
+                </div>
+            </div>
+            <div class="col">
+                <span class="date">{ date }</span>
+            </div>
+            <div class="col-1">
+                <img src="img/trashbin.png" class="trashbin" alt="Deletebutton" onclick="{ removeIssue }" />
+            </div>
+        </div>
+    </li>
+
+    <script>
+        let tag = this;
+
+        //Formatiere Ausgabe von due_date
+        tag.date = (tag.due_date.split("T"))[0];
+
+        tag.updateChecked = function() {
+            issueList._tag.issues.updateChecked(this);
+        };
+        
+        tag.removeIssue = function() {
+            issueList._tag.issues.deleteInBackEnd(this);
+        };
+        
+    </script>
+</issue>
